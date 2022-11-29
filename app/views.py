@@ -7,9 +7,9 @@ def home():
     return "Flask says 'Hello world!'"
  
  
-@app.route('/phonebook')
+@app.route('/lab02')
 def index():
-    return app.send_static_file('phonebook.html')
+    return app.send_static_file('lab02_resume.html')
  
  
 # This route serves the dictionary d at the route /date
