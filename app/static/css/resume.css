@@ -1,3 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    color: rgb(255, 255, 255);
+}
+
 body {
-    background-color: lightblue;
+    background-color: #262626;
+    display: flex;
+    justify-content: center;
+}
+
+/* ?img */
+img{
+    width: 100%;
+}
+
+img:hover{
+    opacity: 0.8; /* ตอนเอาcurserไปชี้ */
+}
+
+a {
+	text-decoration: none;
+	color: white;
+}
+.icon{
+    width: 17px;
+    margin-top: 0.75rem;
+    margin-right: 0.3rem;
+}
+
+/* ?layout */
+.container{
+    max-width: 1000px;
+    width: 100%;
+    display: grid;
+    padding: 4rem;
+    background: #161616;
+}
+
+/* ?profile */
+.profile-container{
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-img{
+    max-width: 300px;
+    margin-left: 1rem;
+}
+
+.profile-text-name{
+    color: rgb(198, 255, 75);
+    font-size: 50px;
+    padding: 4rem 0rem 0.3rem 0rem;
+}
+
+.profile-text-id{
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    padding: 0rem 0rem 0.3rem 0rem;
+}
+
+.profile-text-occupation{
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 500;
+    padding: 0rem 0rem 0.3rem 0rem;
+}
+
+
+/* ?data */
+.data{
+    padding: 0.5rem;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 54% auto;
+    gap: 3.5rem;
+}
+
+.left-group{
+    display: grid;
+    row-gap: 2rem;
+}
+
+.right-group{
+    display: grid;
+    row-gap: 2rem;
+}
+
+.title{
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+	color: rgb(164, 228, 96);
+}
+
+a:hover{
+    opacity: 0.6;
+}
+
+p, ul, li {
+    font-weight: 300;
+}
+
+.year{
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.interested-item{
+    margin-left: 1rem;
+}
+.skill-item{
+    margin-left: 1rem;
+}
+.project-item{
+    margin-left: 1rem;
+}
+
+/* ?midterm exam table */
+table{
+    border: 1px solid rgb(255, 252, 252);
+    border-radius: 2px;
+    width: 90%;
+}
+th, td {
+    border: 1px solid rgb(255, 252, 252);
+    border-radius: 1px;
+    padding: 6px;
+}
+tr{
+    height: 35px;
+    width: 20% 20% 60%; 
+}
+td {
+    font-weight: 300;
 }
