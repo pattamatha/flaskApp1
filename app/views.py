@@ -11,7 +11,7 @@ def home():
 def index():
     return app.send_static_file('lab02_resume.html')
  
- 
+
 # This route serves the dictionary d at the route /api/data
 @app.route("/phonebook")
 def data():
@@ -25,7 +25,8 @@ def data():
  
     return jsonify(d)  # convert your data to JSON and return
 
-# ------------------Lab03------------------------------------
+
+# ?------------------Lab03------------------------------------
 @app.route('/lab03')
 def lab03_home():
     return render_template('lab03/index.html',
@@ -43,3 +44,9 @@ def lab03_comments():
                 'This is the fourth comment.']
  
     return render_template('lab03/comments.html', comments=comments)
+
+
+# ?------------------Lab04------------------------------------
+@app.route('/lab04')
+def lab04_bootstrap():
+    return app.send_static_file('lab04_bootstrap.html')
