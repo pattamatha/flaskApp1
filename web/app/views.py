@@ -10,6 +10,11 @@ def home():
     return "Flask says 'Hello world!'"
 
 
+
+@app.route('/crash')
+def crash():
+    return 1/0
+
 @app.route('/db')
 def db_connection():
     try:
