@@ -5,16 +5,17 @@ from sqlalchemy.sql import text
 from app import app
 from app import db
 from app.models.contact import Contact
+from app.models.blog import BlogEntry
 
 @app.route('/')
 def home():
     return "Flask says 'Hello world!'"
 
 
-
 @app.route('/crash')
 def crash():
     return 1/0
+
 
 @app.route('/db')
 def db_connection():
@@ -97,3 +98,20 @@ def lab10_remove_contacts():
             app.logger.debug(ex)
             raise
     return lab10_db_contacts()
+
+
+#?----------------- Lab11_miniblogs ---------------------------
+@app.route('/lab11', methods=('GET', 'POST'))
+def lab11_microblog():
+    return app.send_static_file('lab11_microblog.html')
+
+
+@app.route("/lab11/blogs")
+def lab11_db_contacts():
+    blogs = []
+    db_blogs = BlogEntry.query.all()
+
+    blogs = list(map(lambda x: x.to_dict(), db_blogs))
+    app.logger.debug("DB Contacts: " + str(blogs))
+
+    return jsonify(blogs)
