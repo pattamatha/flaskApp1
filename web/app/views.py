@@ -1,7 +1,7 @@
 from flask import (jsonify, render_template,
                    request, url_for, flash, redirect)
 import json
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, desc
 from app import app
 from app import db
 from app.models.contact import Contact
@@ -100,16 +100,55 @@ def lab10_remove_contacts():
     return lab10_db_contacts()
 
 
-#?----------------- Lab11_miniblogs ---------------------------
+#?----------------- Lab11_microblog ---------------------------
 @app.route('/lab11', methods=('GET', 'POST'))
 def lab11_microblog():
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(str(result))
+        id_ = result.get('id', '')
+        validated = True
+        validated_dict = dict()
+        valid_keys = ['name', 'email', 'message']
+
+        # validate the input
+        for key in result:
+            app.logger.debug(f"{key}, {result[key]}")
+            # screen of unrelated inputs
+            if key not in valid_keys:
+                continue
+
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+        app.logger.debug(f"data = {str(validated_dict)}")
+        
+        if validated:
+            app.logger.debug('validated dict: ' + str(validated_dict))
+            # if there is no id: create a new contact entry
+            if not id_:
+                blog_entry = BlogEntry(**validated_dict)
+                app.logger.debug(str(blog_entry))
+                db.session.add(blog_entry)
+            # if there is an id already: update the contact entry
+            else:
+                blog = BlogEntry.query.get(id_)
+                blog.update(**validated_dict)
+
+            db.session.commit()
+
+        return lab11_db_contacts()
+
     return app.send_static_file('lab11_microblog.html')
 
 
 @app.route("/lab11/blogs")
 def lab11_db_contacts():
     blogs = []
-    db_blogs = BlogEntry.query.all()
+    # ให้ DB เรียงตามเวลาที่มาช้ากว่า คือให้โพสที่เพิ่มทีหลังอยู่ด้านบนสุด
+    db_blogs = BlogEntry.query.order_by(BlogEntry.date_created.desc()).all()
 
     blogs = list(map(lambda x: x.to_dict(), db_blogs))
     app.logger.debug("DB Contacts: " + str(blogs))
