@@ -139,13 +139,13 @@ def lab11_microblog():
 
             db.session.commit()
 
-        return lab11_db_contacts()
+        return lab11_db_blogs()
 
     return app.send_static_file('lab11_microblog.html')
 
 
 @app.route("/lab11/blogs")
-def lab11_db_contacts():
+def lab11_db_blogs():
     blogs = []
     # ให้ DB เรียงตามเวลาที่มาช้ากว่า คือให้โพสที่เพิ่มทีหลังอยู่ด้านบนสุด
     db_blogs = BlogEntry.query.order_by(BlogEntry.date_created.desc()).all()
@@ -154,3 +154,19 @@ def lab11_db_contacts():
     app.logger.debug("DB Contacts: " + str(blogs))
 
     return jsonify(blogs)
+
+
+@app.route('/lab11/delete_blogs', methods=('GET', 'POST'))
+def lab11_delete_blogs():
+    app.logger.debug("LAB11 - DELETE")
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        try:
+            blog = BlogEntry.query.get(id_)
+            db.session.delete(blog)
+            db.session.commit()
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return lab11_db_blogs()

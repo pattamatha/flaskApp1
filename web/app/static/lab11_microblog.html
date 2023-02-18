@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  
-  <title>My Twitter</title>
+  <title>My Blog</title>
 </head>
  
 <body>
@@ -61,7 +61,7 @@
                             <label for="text-input">Message</label>
                             <input type="text" class="form-control" id="text-input" name="message" placeholder="Whats happening?">
                           </div>
-                          <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                          <button type="submit" class="btn btn-success" name="submit">Submit</button>
                         </form>
                       </div>
                     </div>
@@ -105,7 +105,6 @@
         var dateCreated = Date.parse(element.date_created) - (offset*60*1000); //แปลงเวลาที่เรามีให้เป็นเวลาไทย
         var dateCreated = new Date(dateCreated).toLocaleString("en-GB") //ทำให้เวลาอยู่ในรูปแบบไทย (วันเดือนปี)
         //console.log(dateCreated);
-
         output += `
         <div class="card">
           <div class="card-body">
@@ -113,8 +112,8 @@
             <h6 class="card-email mb-2 text-muted">${element.email}</h6>
             <p class="card-text"><small class="text-muted">${dateCreated}</small></p>
             <p class="card-message">${element.message}</p>
-            <a href="#" class="card-link">Edit</a>
-            <a href="#" class="card-link">Delete</a>
+            <button type="button" class="btn btn-info btn-sm" id="edit-post">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" value = "${element.id}" onclick="deletePost(this.value)">Delete</button>
           </div>
         </div>
         `;
@@ -122,11 +121,13 @@
       postBox.innerHTML = output;
       output = '';
     }
+
     $(document).ready(function () {
       (function () {
         $.getJSON("lab11/blogs", populate_post);
       })();
     });
+
 
     //---------------------- submit -----------------------------
     $("#addBlogForm").submit(function (event) {
@@ -147,15 +148,45 @@
       var $form = $(this);
       var url = $form.attr("action");
       $.post(url, formData, function (blog_data) {
+        refresh_feed(blog_data);
         $('#addBlogForm')[0].reset();
-
-        // call function 
-        populate_post(blog_data);
       });
 
     });
 
 
+    //---------------------- refresh -----------------------------
+    function refresh_feed(blog_data) {
+      document.getElementById("post-box").innerHTML = "";
+      document
+        .getElementById("post-box")
+        .addEventListener("load", populate_post(blog_data));
+    }
+
+
+    //---------------------- edit -----------------------------
+    function prePopulateForm(row) {
+      $('#addPhoneNumberForm')[0].reset();
+      $('#firstname').val(row.firstname);
+      $('#lastname').val(row.lastname);
+      $('#phone').val(row.phone);
+      $('#entryid').val(row.id);
+    }
+
+
+    //---------------------- delete -----------------------------
+    function deletePost(id) {
+      if (!confirm("Delete this post ?")) {
+        return false;
+      }
+      var url = "/lab11/delete_blogs"
+      var formData = { 'id': id };
+      $.post(url, formData, function (blog_data) {
+        refresh_feed(blog_data)
+      });
+    }
+
+    
   </script>
 </body>
  
