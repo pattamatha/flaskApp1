@@ -49,6 +49,7 @@
                       </div>
                       <div class="col-md-9">
                         <form id="addBlogForm" action="/lab11">
+                          <input type="text" id="id-input" name="id" style="display: none">
                           <div class="form-group">
                             <label for="name-input">Name</label>
                             <input type="text" class="form-control" id="name-input" name="name" placeholder="name">
@@ -95,28 +96,52 @@
   <script>
     //---------------------- post -----------------------------
     const postBox = document.querySelector('.post-box');
+    let arrayData;
     let output = '';
     
     function populate_post(data) {
-      data.forEach(element => {
+      arrayData = data;
+      // ทำให้ name,email ของ user แสดงบนฟอร์ม
+      $('#name-input').val(arrayData[0]?.name);
+      $('#email-input').val(arrayData[0]?.email);
+
+      data.forEach((element, index) => {
         var date = new Date();
         var offset = date.getTimezoneOffset(); // offset จะได้ค่าเป็นนาทีทีเวลา us ต่างจากไทย (420นาที)
         //console.log(offset);
         var dateCreated = Date.parse(element.date_created) - (offset*60*1000); //แปลงเวลาที่เรามีให้เป็นเวลาไทย
-        var dateCreated = new Date(dateCreated).toLocaleString("en-GB") //ทำให้เวลาอยู่ในรูปแบบไทย (วันเดือนปี)
+        var dateCreated = new Date(dateCreated).toLocaleString("th-TH") //ทำให้เวลาอยู่ในรูปแบบไทย (วันเดือนปี)
         //console.log(dateCreated);
-        output += `
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-name">${element.name}</h5>
-            <h6 class="card-email mb-2 text-muted">${element.email}</h6>
-            <p class="card-text"><small class="text-muted">${dateCreated}</small></p>
-            <p class="card-message">${element.message}</p>
-            <button type="button" class="btn btn-info btn-sm" id="edit-post">Edit</button>
-            <button type="button" class="btn btn-danger btn-sm" value = "${element.id}" onclick="deletePost(this.value)">Delete</button>
+        if (Date.parse(element.date_created) === Date.parse(element.date_updated)) {
+          output += `
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-name" id="name">${element.name}</h5>
+              <h6 class="card-email mb-2 text-muted" id="email">${element.email}</h6>
+              <p class="card-text"><small class="text-muted" id="date">${dateCreated}</small></p>
+              <p class="card-message" id="message">${element.message}</p>
+              <button type="button" class="btn btn-info btn-sm" value="${index}" onclick="prePopulateForm(this.value)">Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" value="${element.id}" onclick="deletePost(this.value)">Delete</button>
+            </div>
           </div>
-        </div>
-        `;
+          `;
+        } else {
+          var dateUpdated = Date.parse(element.date_updated) - (offset*60*1000); //แปลงเวลาที่เรามีให้เป็นเวลาไทย
+          var dateUpdated = new Date(dateUpdated).toLocaleString("th-TH") //ทำให้เวลาอยู่ในรูปแบบไทย (วันเดือนปี)
+          output += `
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-name" id="name${element.id}">${element.name}</h5>
+              <h6 class="card-email mb-2 text-muted" id="email${element.id}">${element.email}</h6>
+              <p class="card-text"><small class="text-muted" id="date">${dateCreated}</small></p>
+              <p class="card-text"><small class="text-muted" id="date">edit: ${dateUpdated}</small></p>
+              <p class="card-message" id="message${element.id}">${element.message}</p>
+              <button type="button" class="btn btn-info btn-sm" value="${index}" onclick="prePopulateForm(this.value)">Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" value="${element.id}" onclick="deletePost(this.value)">Delete</button>
+            </div>
+          </div>
+          `;
+        }
       });
       postBox.innerHTML = output;
       output = '';
@@ -148,8 +173,8 @@
       var $form = $(this);
       var url = $form.attr("action");
       $.post(url, formData, function (blog_data) {
-        refresh_feed(blog_data);
         $('#addBlogForm')[0].reset();
+        refresh_feed(blog_data);
       });
 
     });
@@ -165,12 +190,13 @@
 
 
     //---------------------- edit -----------------------------
-    function prePopulateForm(row) {
-      $('#addPhoneNumberForm')[0].reset();
-      $('#firstname').val(row.firstname);
-      $('#lastname').val(row.lastname);
-      $('#phone').val(row.phone);
-      $('#entryid').val(row.id);
+    function prePopulateForm(index){
+      $("#addBlogForm").trigger("reset");
+      $('#id-input').val(arrayData[index].id);
+      $('#name-input').val(arrayData[index].name);
+      $('#email-input').val(arrayData[index].email);
+      $('#text-input').val(arrayData[index].message);
+      
     }
 
 
