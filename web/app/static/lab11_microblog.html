@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- ?CSS -->
-  <link rel="stylesheet" href="static/css/mytwitter.css">
+  <link rel="stylesheet" href="static/css/myblogs.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap">
   <link rel="stylesheet" href="static/css/open-iconic-bootstrap.css">
  
   <!-- ?Bootstrap CSS -->
@@ -15,6 +16,12 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  
   <title>My Blog</title>
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: #2b2d2e;
+    }
+  </style>
 </head>
  
 <body>
@@ -37,13 +44,11 @@
       <div class="container">
         <div class="row">
           <div id="left_3" class="col-md-3">
-            <div class="content-box">Account details</div>
-            <div class="content-box">Trends</div>
           </div>
           <div id="center_6" class="col-md-6">
             <div class="content-box">
-                <div class="new-tweet-row">
-                    <div class="row">
+                <div class="new-tweet-row card">
+                    <div class="row card-body">
                       <div class="col-md-2">
                         <img src="static/img/tweeterUserSmall.png" class="tw-user-small rounded-circle mx-auto d-block">
                       </div>
@@ -60,22 +65,21 @@
                           </div>
                           <div class="form-group">
                             <label for="text-input">Message</label>
-                            <input type="text" class="form-control" id="text-input" name="message" placeholder="Whats happening?">
+                            <textarea type="text" class="form-control" id="text-input" name="message" placeholder="Whats happening?"></textarea>
                           </div>
-                          <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                          <button type="submit" class="btn btn-success float-right" name="submit" >Submit</button>
                         </form>
                       </div>
                     </div>
                   </div>     
             </div>
-            <hr>
             <!--!------------------------------- post --------------------------------->
             <div class="post-box" id="post-box">
             </div>
           </div>
 
           <div id="right_3" class="col-md-3">
-            <div class="content-box">Who to follow</div>
+            
           </div>
         </div>
       </div>
@@ -118,7 +122,7 @@
             <div class="card-body">
               <h5 class="card-name" id="name">${element.name}</h5>
               <h6 class="card-email mb-2 text-muted" id="email">${element.email}</h6>
-              <p class="card-text"><small class="text-muted" id="date">${dateCreated}</small></p>
+              <span class="card-text"><small class="text-muted" id="date">${dateCreated}</small></span>
               <p class="card-message" id="message">${element.message}</p>
               <button type="button" class="btn btn-info btn-sm" value="${index}" onclick="prePopulateForm(this.value)">Edit</button>
               <button type="button" class="btn btn-danger btn-sm" value="${element.id}" onclick="deletePost(this.value)">Delete</button>
@@ -131,11 +135,11 @@
           output += `
           <div class="card">
             <div class="card-body">
-              <h5 class="card-name" id="name${element.id}">${element.name}</h5>
-              <h6 class="card-email mb-2 text-muted" id="email${element.id}">${element.email}</h6>
-              <p class="card-text"><small class="text-muted" id="date">${dateCreated}</small></p>
-              <p class="card-text"><small class="text-muted" id="date">edit: ${dateUpdated}</small></p>
-              <p class="card-message" id="message${element.id}">${element.message}</p>
+              <h5 class="card-name" id="name">${element.name}</h5>
+              <h6 class="card-email mb-2 text-muted" id="email">${element.email}</h6>
+              <span class="card-text"><small class="text-muted" id="date">${dateCreated}</small></span>
+              <span class="card-text"><small class="text-muted" id="date">edit when ${dateUpdated}</small></span>
+              <p class="card-message" id="message">${element.message}</p>
               <button type="button" class="btn btn-info btn-sm" value="${index}" onclick="prePopulateForm(this.value)">Edit</button>
               <button type="button" class="btn btn-danger btn-sm" value="${element.id}" onclick="deletePost(this.value)">Delete</button>
             </div>
