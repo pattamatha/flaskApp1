@@ -170,3 +170,29 @@ def lab11_delete_blogs():
             app.logger.debug(ex)
             raise
     return lab11_db_blogs()
+
+
+#?----------------- Lab12 ---------------------------
+@app.route('/lab12')
+def lab12_index():
+   return 'Lab12'
+
+
+@app.route('/lab12/profile')
+def lab12_profile():
+   return 'Profile'
+
+
+@app.route('/lab12/login')
+def lab12_login():
+   return 'Login'
+
+
+@app.route('/lab12/signup')
+def lab12_signup():
+   return 'Sign Up'
+
+
+@ app.route('/lab12/logout')
+def lab12_logout():
+   return 'Logout'
