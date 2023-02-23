@@ -175,22 +175,22 @@ def lab11_delete_blogs():
 #?----------------- Lab12 ---------------------------
 @app.route('/lab12')
 def lab12_index():
-   return 'Lab12'
+   return render_template('lab12/index.html')
 
 
 @app.route('/lab12/profile')
 def lab12_profile():
-   return 'Profile'
+   return render_template('lab12/profile.html')
 
 
 @app.route('/lab12/login')
 def lab12_login():
-   return 'Login'
+   return render_template('lab12/login.html')
 
 
 @app.route('/lab12/signup')
 def lab12_signup():
-   return 'Sign Up'
+   return render_template('lab12/signup.html')
 
 
 @ app.route('/lab12/logout')
