@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 app = Flask(__name__, static_folder='static')
 
@@ -17,7 +18,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 if app.debug:
     app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
+
 # Creating an SQLAlchemy instance
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.login_view = 'lab12_login'
+login_manager.init_app(app)
 
 from app import views  # noqa

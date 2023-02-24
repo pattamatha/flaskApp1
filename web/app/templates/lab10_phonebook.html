@@ -18,6 +18,12 @@
 
 <body>
   <div id="header" class="container">
+    <div class="box3">
+      <button id="logout" type="button">Logout</button>
+    </div>
+    <h1>{{ current_user.name }}'s Phonebook</h1>
+  </div>
+  <div id="header" class="container">
     <h1>Phonebook</h1>
   </div>
   <div id="add-edit" class="container" hidden="hidden">
@@ -151,7 +157,6 @@
       toggleView();
     }
 
-
       function removeItem(row) {
       if (!confirm("Delete " + row.firstname + ' ' + row.lastname + '?')) {
         return false;
@@ -188,6 +193,10 @@
       toggleView();
     });
 
+    $("#logout").click(function () {
+     clearForm();
+     window.location.href = "lab12/logout";
+   });
 
   </script>
 </body>
