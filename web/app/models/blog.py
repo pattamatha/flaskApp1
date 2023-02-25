@@ -11,19 +11,19 @@ class BlogEntry(db.Model, SerializerMixin):
     __tablename__ = "blog_entries"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    #name = db.Column(db.String(50))
     message = db.Column(db.String(280))
-    email = db.Column(db.String(50))
+    #email = db.Column(db.String(50))
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     date_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # constructor
-    def __init__(self, name, message, email):
-        self.name = name
+    def __init__(self, message):
+        #self.name = name
         self.message = message
-        self.email = email
+        #self.email = email
     
-    def update(self, name, message, email):
-        self.name = name
+    def update(self, message):
+        #self.name = name
         self.message = message
-        self.email = email
+        #self.email = email
