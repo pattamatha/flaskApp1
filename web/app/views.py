@@ -368,7 +368,7 @@ def lab13_login():
         login_user(user, remember=remember)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('lab13_profile')
+            next_page = url_for('lab11_microblog')
         return redirect(next_page)
 
     return render_template('lab13/login.html')
@@ -451,3 +451,64 @@ def gen_avatar_url(email, name):
 def lab13_logout():
     logout_user()
     return redirect(url_for('lab11_microblog'))
+
+
+@app.route('/lab13/setting', methods=('GET', 'POST'))
+def lab13_setting():
+   if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(str(result))
+ 
+        validated = True
+        validated_dict = {}
+        valid_keys = ['email', 'name', 'password']
+
+        # validate the input
+        for key in result:
+            app.logger.debug(str(key)+": " + str(result[key]))
+            # screen of unrelated inputs
+            if key not in valid_keys:
+                continue
+
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+            # code to validate and add user to database goes here
+
+        user = AuthUser.query.get(current_user.id)
+ 
+        # check if the user actually exists
+        # take the user-supplied password, hash it, and compare it to the
+        # hashed password in the database
+        if not user or not check_password_hash(user.password, validated_dict["password"]):
+            flash('Please check your password again.')
+
+            # if the user doesn't exist or password is wrong, reload the page
+            return redirect(url_for('lab13_setting'))
+        
+        validated_dict.pop("password")
+        
+        if current_user.email != user.email:
+            user = AuthUser.query.filter_by(email= validated_dict["email"]).first()
+            if user:
+                # if a user is found, we want to redirect back to signup
+                # page so user can try again
+                flash('Email address already exists')
+                return redirect(url_for('lab13_setting'))
+        
+        avatar_url = gen_avatar_url(validated_dict["email"], validated_dict["name"])
+        validated_dict["avatar_url"] = avatar_url
+
+        blog = AuthUser.query.get(current_user.id)
+        blog.update(**validated_dict)
+
+        db.session.commit()
+
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('lab11_microblog')
+        return redirect(next_page)
+
+   return render_template('lab13/setting.html')
