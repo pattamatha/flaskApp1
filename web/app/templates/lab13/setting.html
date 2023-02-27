@@ -1,3 +1,4 @@
+  
 {% extends "lab13/base.html" %}
 {% block content %}
 <div class="column is-4 is-offset-4">
@@ -13,20 +14,23 @@
    <form method="POST">
      <div class="field">
        <div class="control">
-         <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="" value="{{current_user.email}}">
+         <input class="input is-medium" type="email" name="email" placeholder="Email" autofocus="" value="{{current_user.email}}">
        </div>
      </div>
      <div class="field">
        <div class="control">
-         <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="" value="{{current_user.name}}">
+         <input class="input is-medium" type="text" name="name" placeholder="Name" autofocus="" value="{{current_user.name}}">
        </div>
      </div>
      <div class="field">
+      <p style="color: #CB4335"> Please confirm your current password</p> 
+     </div>
+     <div class="field">
         <div class="control">
-          <input class="input is-large" type="password" name="password" placeholder="Password">
+          <input class="input is-medium" type="password" name="password" placeholder="Password">
         </div>
     </div>
-     <button class="button is-block is-info is-large is-fullwidth" >Setting</button>
+     <button class="button is-rounded is-success is-medium is-fullwidth" >Setting</button>
    </form>
  </div>
 </div>

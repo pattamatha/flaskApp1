@@ -22,6 +22,7 @@ def load_user(user_id):
     # user table, use it in the query for the user
     return AuthUser.query.get(int(user_id))
 
+
 @app.route('/')
 def home():
     return "Flask says 'Hello world!'"
@@ -47,6 +48,7 @@ def lab04_bootstrap():
     return app.send_static_file('lab04_bootstrap.html')
 
 
+#?----------------- Lab10_phonebook ---------------------------
 @app.route('/lab10', methods=('GET', 'POST'))
 @login_required
 def lab10_phonebook():
@@ -184,13 +186,12 @@ def lab11_db_blogs():
         app.logger.debug(i.to_dict())
         owner_id = i.to_dict()["owner_id"]
         app.logger.debug(owner_id)
-        user_id = AuthUser.query.get(owner_id)
-        app.logger.debug(user_id.to_dict())
-        blogs.append([user_id.to_dict(), i.to_dict()])
+        user_data = AuthUser.query.get(owner_id)
+        app.logger.debug(user_data.to_dict())
+        blogs.append([user_data.to_dict(), i.to_dict()])
 
     #blogs = list(map(lambda x: x.to_dict(), db_blogs))
     #app.logger.debug("DB Contacts: " + str(blogs))
-
 
     return jsonify(blogs)
 
@@ -336,7 +337,7 @@ def lab12_logout():
 #?----------------- Lab13 ---------------------------
 @app.route('/lab13')
 def lab13_index():
-   return render_template('lab13/index.html')
+   return redirect(url_for('lab11_microblog'))
 
 
 @app.route('/lab13/profile')
@@ -477,8 +478,8 @@ def lab13_setting():
             validated_dict[key] = value
             # code to validate and add user to database goes here
 
+
         user = AuthUser.query.get(current_user.id)
- 
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the
         # hashed password in the database
