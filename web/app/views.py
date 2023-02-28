@@ -490,14 +490,13 @@ def lab13_setting():
             return redirect(url_for('lab13_setting'))
         
         validated_dict.pop("password")
-        
-        if current_user.email != user.email:
-            user = AuthUser.query.filter_by(email= validated_dict["email"]).first()
-            if user:
-                # if a user is found, we want to redirect back to signup
-                # page so user can try again
-                flash('Email address already exists')
-                return redirect(url_for('lab13_setting'))
+
+        user = AuthUser.query.filter_by(email= validated_dict["email"]).first()
+        if user and current_user.email != user.email:
+            # if a user is found, we want to redirect back to signup
+            # page so user can try again
+            flash('Email address already exists')
+            return redirect(url_for('lab13_setting'))
         
         avatar_url = gen_avatar_url(validated_dict["email"], validated_dict["name"])
         validated_dict["avatar_url"] = avatar_url
