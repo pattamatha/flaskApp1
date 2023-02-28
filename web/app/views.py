@@ -484,7 +484,7 @@ def lab13_setting():
         # take the user-supplied password, hash it, and compare it to the
         # hashed password in the database
         if not user or not check_password_hash(user.password, validated_dict["password"]):
-            flash('Please check your password again.')
+            flash('Please check your password again')
 
             # if the user doesn't exist or password is wrong, reload the page
             return redirect(url_for('lab13_setting'))
@@ -505,10 +505,11 @@ def lab13_setting():
         blog.update(**validated_dict)
 
         db.session.commit()
+        flash('Password Correct')
 
-        next_page = request.args.get('next')
+        '''next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('lab11_microblog')
-        return redirect(next_page)
+        return redirect(next_page)'''
 
    return render_template('lab13/setting.html')

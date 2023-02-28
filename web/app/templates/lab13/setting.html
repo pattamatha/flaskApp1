@@ -6,9 +6,21 @@
  <div class="box">
    {% with messages = get_flashed_messages() %}
    {% if messages %}
-   <div class="notification is-danger">
-     {{ messages[0] }}
-   </div>
+   {% if messages[0] == 'Please check your password again'  %}
+    <div class="notification is-danger">
+      {{ messages[0] }}
+    </div>
+   {% endif %}
+   {% if messages[0] == 'Password Correct'  %}
+    <div class="notification is-success">
+      Profile update <br> Go to <a href="{{ url_for('lab11_microblog_post') }}">tweet blog page</a>
+    </div>
+   {% endif %}
+   {% if messages[0] == 'Email address already exists'  %}
+    <div class="notification is-danger">
+      {{ messages[0] }}
+    </div>
+   {% endif %}
    {% endif %}
    {% endwith %}
    <form method="POST">
